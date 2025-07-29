@@ -15,7 +15,8 @@ def home(request):
 
         if result.get('success'):
             # reCAPTCHA passed
-            return render(request, 'success.html')
+            # return render(request, 'dashboard.html')
+            return redirect(dashboard)
         else:
             # reCAPTCHA failed
             return render(request, 'index.html', {'error': 'Invalid reCAPTCHA. Please try again.'})
@@ -47,8 +48,6 @@ def dashboard(request):
     return render(request, "dashboard.html", {'users': user})
 
 
-from django.shortcuts import render, redirect
-from .models import user_data  # Make sure your model is correctly imported
 
 
 def login(req):
@@ -57,7 +56,7 @@ def login(req):
         password = req.POST.get('password')
         try:
             user = user_data.objects.get(email=email, password=password)
-            return redirect(dashboard)  # Use name if you have it in urls.py
+            return redirect('dashboard')  # Use name if you have it in urls.py
         except user_data.DoesNotExist:
             return render(req, 'index.html', {'error': 'Invalid email or password'})
 
